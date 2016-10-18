@@ -300,7 +300,8 @@ rev.controller('detailCtrl', function($scope,$http,$timeout,fileUpload, getInfoS
 
   $scope.loadDistintaBase = function(item)
   {
-    console.log(item);
+
+    //console.log(item);
     var params = 'views/showdistintabase.php?id=' + item.id + '&id_distbase=' +item.id_distbase+'&layout='+item.layout+'&numdisegno='+ item.disegno_no;
     location.href = params;
     //$scope.caricaFileSelezionato = !$scope.caricaFileSelezionato;

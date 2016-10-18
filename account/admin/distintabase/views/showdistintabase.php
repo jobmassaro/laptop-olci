@@ -43,6 +43,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['id'])
 	$numdisegno = $_GET['numdisegno'];
 
 	
+  $sql = "SELECT * FROM tbl_olci_lista_distinta_base WHERE id=" . $id .' AND id_distbase=' . $id_distbase;
+//  var_dump($sql);
+
+  $result = mysqli_query($mysqli, $sql);
+
+ if (mysqli_num_rows($result) > 0) 
+ {
+   
+    // output data of each row
+    while($row = mysqli_fetch_assoc($result)) 
+    {
+      $distinta = $row['gruppo'];
+      $id_distbase = $row['id_distbase'];
+      $id = $row['id'];
+      $numero_disegno = $row['disegno_no'];
+      $titolo = $row['titolo'];
+
+    /*  var_dump($distinta);
+      var_dump($id_distbase);
+      var_dump($id);
+      die();  */
+    }
+  } 
+
+
+
 
 	if($layout == 1 )
 	{
@@ -228,6 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['id'])
 	<div class="row">
 			<div class="col-md-6">
 				<h2>Drawing: <b><?php echo $numdisegno; ?></b></h2>
+         <p style="color: grey; font-size:1.5em;text-align: center;""><?php echo $titolo; ?></p>
 				<p>List Base:<b style="font-size: 1.9em; color: blue;"> <?php echo $layout; ?></b>  ---  Last Revision:<b style="font-size: 1.9em; color: blue;"> <?php echo $lastrevision ;  ?></b></p>
 				<button name="save" class="btn btn-default btn-lg">SAVE</button>
 				<button class="btn btn-primary btn-lg">NEW REVISION</button>

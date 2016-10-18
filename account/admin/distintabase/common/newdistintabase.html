@@ -1,0 +1,48 @@
+<!--div class="form-horizontal " id="editDistintaBase" >
+
+
+	<div class="container">
+		<div class="form-group file-upload">
+			<input type="hidden" id="numid" name="numid" value="{{ c.id }}">
+			<input type="hidden" id="numdise" name="numdise" value="{{ c.disegno_no }}">
+			<input type="hidden" id="relazbase" name="relazbase" value="{{ c.id_distbase }}">
+        	<input type="text" ng-model="c.name">
+        	<input type="file" file-model="myFile"/>
+        	<button type="file" ngf-select="uploadFiles(c, $file, $invalidFiles)"
+        accept="*.xls" ngf-max-height="1000" ngf-max-size="10MB">
+    Select File</button> 
+    	</div>
+    </div>
+
+
+-->
+
+<div class="container">
+		<div class="form-group">
+			<form action="uploadDBase.php" method="post" enctype="multipart/form-data" name="FileUploadForm" id="FileUploadForm">
+				<input type="hidden" id="numid" name="numid" value="{{ c.id }}">
+				<input type="hidden" id="numdise" name="numdise" value="{{ c.disegno_no }}">
+				<input type="hidden" id="relazbase" name="relazbase" value="{{ c.id_distbase }}">
+				<div class="input-group col-xs-12">
+					<div ng-controller="uploadCtrl">  
+				       <div class="file-upload">
+				        	<input type="hidden" ng-model="name">
+					        <input type="file" file-model="myFile" class="form-control input-lg"/>
+					        <button ng-click="uploadFile(c)" class="browse btn btn-primary input-lg file-upload-button">upload me</button>
+				    	</div>
+					</div>  
+		    	</div>    	
+			</form>
+		</div>
+	</div>
+</div>
+<!--
+<div class="form-horizontal " id="editDistintaBase">
+ 	<div ng-controller="uploadCtrl">  
+        <div class="file-upload">
+        	<input type="text" ng-model="name">
+	        <input type="file" file-model="myFile"/>
+	        <button ng-click="uploadFile()">upload me</button>
+    	</div>
+	</div>  
+</div> -->

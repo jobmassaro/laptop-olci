@@ -1,0 +1,3 @@
+RewriteCond %{REQUEST_FILENAME} !index.html
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule .* index.html?file=$0 [QSA,L] # pass everything thru php

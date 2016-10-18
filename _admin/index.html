@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<html ng-app="olciAdmin">
+<head>
+	<title>OLCI-LoginApp</title>
+	<link rel="stylesheet" href="../dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="../dist/css/style.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+<head>
+<body ng-controller="AdminCtrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<img src="../images/logo.png">
+			</div>
+			<div class="col-md-6" >	
+
+				<div class="panel panel-primary">
+					<div class="panel-body">
+						<form role="form"  name="userForm" novalidate>
+							<div class="form-group">
+								<h2>Create account</h2>
+							</div>
+							<span ng-show="nameRequired" id="alert">{{nameRequired}}</span>
+							<div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+								<label class="control-label" for="signupName">Account</label>
+								<input id="signupName" type="text" maxlength="50" class="form-control" name="username" ng-minlength="3" ng-model="acc.username" required>
+								<p ng-show="userForm.username.$error.minlength" class="help-block">Username is too short.</p>
+								<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">
+							</div>
+							<div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+								<label class="control-label" for="signupPassword">Password</label>
+								<input id="signupPassword" type="password" maxlength="25" class="form-control" name="password" placeholder="at least 6 characters" length="40" 
+								ng-model="acc.password" ng-minlength="3" ng-required>
+								
+							</div>
+							<div class="form-group" ng-class="{'has-error':!userForm.pwd2.$valid}">
+								<label class="control-label" for="signupPasswordagain">Password again</label>
+								<input id="signupPasswordagain" type="password" maxlength="25" class="form-control" ng-model="acc.pwd2" name="pwd2" ng-required ng-minlength="3" ng-match="acc.password" />
+								<span class="help-block" data-ng-show="userForm.pwd2.$error.match">Passwords do not match.</span>
+							</div>
+							
+
+							<div class="form-group">
+								<select name="singleSelect" name="select" ng-model="acc.singleSelect" ng-required >
+    							 	<option value="admin">Admin</option>
+      								<option value="customer">Customer</option>
+      								<option value="supplier">Supplier</option>
+                      <option value="internal">Internal-OLCI</option>
+
+    							</select><br>
+							</div>
+						
+								<div class="form-group">
+									<button id="signupSubmit" type="submit" class="btn btn-info btn-block" ng-disabled="userForm.$invalid" ng-click="submitForm(acc)">Create your account</button>
+								</div>
+							
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<p></p>
+		 <div class="col-md-10 col-md-offset-1">
+
+            <div class="panel panel-default panel-table">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col col-xs-6">
+                    <h3 class="panel-title">Panel Admin</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <table class="table table-striped table-bordered table-list">
+                  <thead>
+                    <tr>
+                        <th><em class="fa fa-cog"></em></th>
+                        <th class="hidden-xs">ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                          <tr ng-repeat="user in users">
+                            <td align="center">
+                              <a class="btn btn-danger" ng-click="deleteUser(user)"><em class="fa fa-trash"></em></a>
+                            </td>
+                            <td class="hidden-xs">{{user.id}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.category}}</td>
+                          </tr>
+                        </tbody>
+                </table>
+            
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <!--<div class="col col-xs-4">Page 1 of 5
+                  </div>
+                  <div class="col col-xs-8">
+                   <!-- <ul class="pagination hidden-xs pull-right">
+                      <li><a href="#">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#">4</a></li>
+                      <li><a href="#">5</a></li>
+                    </ul> -->
+                    <ul class="pagination visible-xs pull-right">
+                        <li><a href="#">«</a></li>
+                        <li><a href="#">»</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- AUTORIZZAZIONI -->
+             <div class="col-md-10 col-md-offset-1" ng-controller="AuthCtrl">
+
+            <div class="panel panel-default panel-table">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col col-xs-6">
+                    <h3 class="panel-title">Authorization</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <table class="table table-striped table-bordered table-list">
+                  <thead>
+                    <tr>
+                        <th><em class="fa fa-cog"></em></th>
+                        <th class="hidden-xs">Power User</th>
+                        <th>Olci User</th>
+                        <th>Olci Std</th>
+                        <th>Supplier</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                          <tr>
+                            <td>creazione / gestione tabella disegni di progetto cliente</td>
+                            <td><!--You selected: {{olci.user}}<br>
+                            You selected: {{olci.std}}<br/>
+                            You selected: {{olci.supplier}}<br/> -->
+                            </td>
+                            <td>
+                             <select ng-model="olci.user">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>creazione / gestione tabella disegni  progetto standard</td>
+                            <td></td>
+                            <td>
+                             <select ng-model="olci.user1">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std1">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier1">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>lettura tabella disegni di progetto cliente</td>
+                            <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user2">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std2">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier2">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>                            
+                          <tr>
+                             <td>lettura tabella disegni progetto standard</td>
+                             <td></td>
+                             <td>
+                             <select ng-model="olci.user3">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std3">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier3">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>inserimento distinte materiali di progetto  cliente</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user4">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std4">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier4">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>inserimento distinte materiali  progetto standard</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user5">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std5">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier5">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>revisioni distinte materiali  progetto  cliente</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user6">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std6">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier6">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>revisioni distinte materiali  progetto  Standard</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user7">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std7">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier7">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>cancellazione distinte  materiali  progetto  cliente</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user8">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std8">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier8">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>cancellazione distinte  materiali  progetto  standard</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user9">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std9">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier9">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>generazione RA / esportazione distinte ad Autorobot</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user10">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std10">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier10">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>esportazione distinte materiali a cliente</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user11">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std11">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier11">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>esportazione distinte materiali in PDF</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user12">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std12">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier12">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>abilitazioni  fornitori nei progetti e in area parking</td>
+                             <td>
+                            </td>
+                            <td>
+                             <select ng-model="olci.user13">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.std13">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                            <td>
+                               <select ng-model="olci.supplier13">
+                                 <option ng-repeat="x in autorizzazioni" value="{{x.model}}">{{x.model}}</option>
+                              </select>
+                            </td>
+                          </tr>
+                        </tbody>
+                </table>
+            
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <!--<div class="col col-xs-4">Page 1 of 5
+                  </div>
+                  <div class="col col-xs-8">
+                   <!-- <ul class="pagination hidden-xs pull-right">
+                      <li><a href="#">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#">4</a></li>
+                      <li><a href="#">5</a></li>
+                    </ul> -->
+                    <ul class="pagination visible-xs pull-right">
+                        <li><a href="#">«</a></li>
+                        <li><a href="#">»</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- END -->
+
+
+		</div>
+	
+	<script src="../node_modules/angular/angular.min.js" ></script>
+    <script src="js/app.js" ></script>
+</body>
+</html>

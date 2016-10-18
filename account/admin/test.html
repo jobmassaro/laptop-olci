@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title> Handsontable | Autocomplete OK | Autofill ?!? </title>
+<link data-jsfiddle="common" rel="stylesheet" media="screen" href="http://handsontable.com/dist/jquery.handsontable.full.css">
+<script data-jsfiddle="common" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script data-jsfiddle="common" src="http://handsontable.com/dist/jquery.handsontable.full.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		var $container	= $("#mytables");
+		var comsources	= ["Chrysler", "Nissan", "Suzuki", "Toyota"];
+
+		var ac = [
+			{"name":"Chrysler","label":"Pepsi Cola Hat","price":"24","abbrev":"CRY"},
+			{"name":"Nissan","label":"Candle Lights Dinner","price":"780","abbrev":"NSS"},
+			{"name":"Suzuki","label":"Pork Meat Ball","price":"178","abbrev":"SZK"},
+			{"name":"Toyota","label":"Granny Health Supplement","price":"24","abbrev":"TYT"}
+		];
+	
+		var ht = $container.handsontable({
+			startRows: 1,
+			startCols: 5,
+			rowHeaders: true,
+			colHeaders: ['Item Name', 'Price', 'Code'],
+			minSpareRows: 1,
+			contextMenu: true,
+			columns: [
+				{
+					data: "name",
+					type: 'autocomplete',
+					source: comsources,
+					strict: false
+				},
+				{
+					data: "price"
+				},
+				{ 
+					data: "code"
+				}
+			],
+			afterChange : function(arr, op) {
+				if(op=="edit"&&arr.length==1) {
+					var value = arr[0][3];
+					for(var i=0;i<ac.length;i++) {
+						if(ac[i].name == value) {
+							console.log("arr" + arr[0][0]);
+							console.log("ac["+ i +" ].price");
+							console.log("ac["+ i +" ].abbrev");
+
+							$container.handsontable("setDataAtCell", arr[0][0], 1, ac[i].price);
+							$container.handsontable("setDataAtCell", arr[0][0], 2, ac[i].abbrev);
+							return false;
+						}
+					}
+				}
+			}
+		});
+	});
+
+</script>
+</head>
+<body>
+<div class="pad">
+	<div id="mytables"></div>
+</div>
+</body>
+</html>

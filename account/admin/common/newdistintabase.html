@@ -1,0 +1,18 @@
+<div class="form-horizontal " id="editDistintaBase" hidden>
+	<div class="container">
+		<div class="form-group">
+			<form action="uploadDBase.php" method="post" enctype="multipart/form-data" name="FileUploadForm" id="FileUploadForm">
+				<input type="text" id="numid" name="numid" value="{{ c.id }}">
+				<input type="text" id="numdise" name="numdise" value="{{ c.disegno_no }}">
+				<input type="text" id="relazbase" name="relazbase" value="{{ c.id_distbase }}">
+				<div class="input-group col-xs-12">
+				      <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+				      <input type="file" name="UploadFileField" id="UploadFileField" class="form-control input-lg"  >
+				      	<span class="input-group-btn">
+		        			<button type="submit" class="browse btn btn-primary input-lg file-upload-button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+		      			</span>
+		    	</div>    	
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="olciApp">
+<head>
+	<title>OLCI-LoginApp</title>
+	<link rel="stylesheet" href="dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="dist/css/style.css" />
+</head>
+<body>
+	<div class="container">
+      <div class="header clearfix col-md-offset-2">
+        <img src="images/logo.png" />
+      </div>
+
+
+      <div class="row" ng-controller="LoginCtrl">
+		<div class="login-page" >
+		  <div class="form">
+		    <form class="register-form">
+		      <span ng-show="nameRequired" id="alert">{{nameRequired}}</span>
+		      <input type="text" placeholder="name" id="name" ng-model="log.name"/>
+		      
+		      <span ng-show="passwordRequired" id="alert">{{passwordRequired}}</span>
+		      <input type="password" placeholder="password" id="name" ng-model="log.password"/>
+		      
+		      <button ng-click="login(log)">Enter</button>
+		     <!-- <p class="message">Already registered? <a href="#">Sign In</a></p>-->
+		    </form>
+		 </div>
+		</div>
+      </div>
+
+      <footer class="footer">
+        <p>&copy; 2015 LoginApp, Inc.</p>
+      </footer>
+
+    </div> <!-- /container -->
+    <script src="node_modules/angular/angular.min.js" ></script>
+    <script src="node_modules/angular/angular-route.js" ></script>
+    <script src="spa/app.js" ></script>
+</body>
+</html>
